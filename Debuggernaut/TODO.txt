@@ -1,0 +1,85 @@
+﻿- Implement a filter/highlight modification dialog
+- Implement multi-line debug outputs
+- Implement find
+    - a la Firefox
+    - Highlighting?
+- Implement findfilter functionality
+    - Similar to find, except it filters down the visible list
+    - Closing the findfilter brings back all entries
+- Implement column selection
+- Implement minimize to tray
+- Implement buffer pool for debug output
+- Implement highlight reset
+- Implement error checking on GoToLineDialog
+- Implement history limit (circular buffer)
+- Implement custom log format
+    - Saves all formatting, items, filters, etc.
+    - Need to think more about this...
+- Implement .settings file
+    - Filters, highlighting, window size, columns, etc.
+    - User does not have to manage files, maintain internally, store in %AppData%
+    - Have ability to export these files for portability, though
+    - Have ability to "Use settings from previous session"
+- Implement "Default Highlight" context menu
+    - Adds highlighting on specified items with a default highlight
+    - Allow user to specify default highlight
+    - Show default highlight color in menu
+- Implement "Show in Notepad"/"Show in %EDITOR%"
+    - Write output to temp file
+    - Open file with editor
+- Switch to the QueryStatus/Exec command model
+    - New menu item objects?
+    - Handle the OnBeforeShow menu event to enable/disable
+- Give tooltips for disabled menu items explaining why
+    - e.g. if "Copy" is disabled, tooltip should read "There are no items to copy"
+- Capture debug output from other sessions ("Global Win32")
+- Handle Debug.Write vs. Debug.WriteLine properly (and non-newline-terminated debug output in general)
+- When user clears output (Ctrl+X), enable autoscroll
+- Add "Choose color..." option to color menus (shows color picker, allows arbitrary colors)
+- UI locks up when a lot of messages come in at once
+    - Doing too much work on UI thread still?
+- "Clear Output" on context menu
+- Use VirtualTreeGrid?
+- Is BeginInvoke the correct response to incoming debug output?
+    - Is ordering of events preserved?
+    - Should we be using Invoke instead?
+- Prevent text wrapping in menus (esp. dynamic text menu entries, use ellipsis char?)
+- Make filtering a display-only mechanism (still collect and store everything)
+    - Show filtered/unfiltered count (e.g. "Showing 6/10")
+- Output top-level menu
+    - Have a "Filter"/"Highlight" submenu and allow filtering based on output seen so far
+    - e.g. "Exclude devenv.exe"
+    - e.g. "Highlight output starting with 'abc'"
+- Enable Ctrl+End to activate autoscroll
+- Bug: cannot click last row of output (autoscroll kicks in, deselects it)
+- Disable autoscroll when scrollbar is manually moved
+- Create classes for common constraints, share between filter and highlighting
+- Pattern dialog improvements
+    - Disallow invalid regex (have realtime status UI: OK/invalid)
+    - Add link to .NET regex documentation
+    - Allow simple /and/ regex patterns (radio button)
+    - Bug: Dialog doesn't handle multiline output well
+        - e.g. "Foo\nbar" shows up in dialog as ".*Foo" (newline kills the rest)
+- Warn if debugger objects are already created
+- PID -> Process name cache (beware of PID reuse)
+- Right-click context menu
+	- View full output (shows output in a separate window) - default double-click behavior?
+- Add menu assists
+    - Dynamic text based on selected item
+    - e.g. "Include Only" -> "This Process ID (3714)"
+    - e.g. "Exclude" -> "This Process (devenv)"
+- Implement column extensibility
+    - string-based, e.g. column["ProcessName"]
+    - process name
+    - unique serial ID
+    - timestamp
+- Reduce memory footprint!
+- P/Invoke to Win32 APIs to get process name?  More stable than System.Diagnostics.Process?
+    ************** Exception Text **************
+    System.ComponentModel.Win32Exception: Only part of a ReadProcessMemory or WriteProcessMemory request was completed
+       at System.Diagnostics.NtProcessManager.GetModuleInfos(Int32 processId, Boolean firstModuleOnly)
+       at System.Diagnostics.NtProcessManager.GetFirstModuleInfo(Int32 processId)
+       at System.Diagnostics.Process.get_MainModule()
+       at Debuggernaut.DefaultListViewItemFactory.Create(Int32 processId, String output) in C:\Users\chrissc\documents\visual studio 2010\Projects\Debuggernaut\Debuggernaut\ListViewItemFactory.cs:line 21
+       at Debuggernaut.FormattingListViewItemFactory.Create(Int32 processId, String output) in C:\Users\chrissc\documents\visual studio 2010\Projects\Debuggernaut\Debuggernaut\ListViewItemFactory.cs:line 46
+       at Debuggernaut.MonitorForm.<>c__DisplayClass5.<OnLoad>b__4() in C:\Users\chrissc\documents\visual studio 2010\Projects\Debuggernaut\Debuggernaut\MonitorForm.cs:line 115
